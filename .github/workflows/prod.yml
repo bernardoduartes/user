@@ -16,5 +16,13 @@ jobs:
         with:
           distribution: 'zulu' # See 'Supported distributions' for available options
           java-version: '17'
+
       - name: Setup Java
         run: mvn clean install
+
+      - name: Login DockerHub
+        run: docker login -u ${secrets.DOCKER_USERNAME} -p ${secrets.DOCKER_PASSWORD}
+      - name: Build Docker image
+        run: docker build -t bernardoduartes/user .
+      - name: Push image docker
+        run: docker push bernardoduartes/user
