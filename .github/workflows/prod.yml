@@ -33,4 +33,4 @@ jobs:
       - name: Pull image from docker hub
         run: docker pull bernardoduartes/user:latest
       - name: Run Docker container
-        run: docker run -d -p 8080:8080 -e DB_URL=${{secrets.DB_URL}} -e DB_USERNAME=${{secrets.DB_USERNAME}} -e DB_PASSWORD='${{secrets.DB_PASSWORD}}' --name bernardoduartes/user
+        run: docker run -d -p 8080:8080 -e DB_URL=${{secrets.DB_URL}} -e DB_USERNAME=${{secrets.DB_USERNAME}} -e DB_PASSWORD='${{secrets.DB_PASSWORD}}' --name user_app bernardoduartes/user
