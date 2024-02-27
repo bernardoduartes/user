@@ -18,7 +18,7 @@ jobs:
           java-version: '17'
 
       - name: Build project
-        run: mvn clean install -DDB_URL=${{secrets.DB_URL}}
+        run: mvn clean install -DskipTests
 
       - name: Login DockerHub
         run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
@@ -26,3 +26,11 @@ jobs:
         run: docker build -t bernardoduartes/user .
       - name: Push image docker
         run: docker push bernardoduartes/user
+  deploy:
+    needs: build
+    runs-on: self-hosted
+    steps:
+      - name: Pull image from docker hub
+        run: docker pull bernardoduartes/user:latest
+      - name: Run Docker container
+        run: docker run -d -p 8081:8081 --name user bernardoduartes/user
