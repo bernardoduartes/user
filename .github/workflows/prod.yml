@@ -23,16 +23,18 @@ jobs:
       - name: Login DockerHub
         run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
       - name: Build Docker image
-        run: docker build -t bernardoduartes/user .
+        run: docker build -t bernardoduartes/user_app .
       - name: Push image docker
-        run: docker push bernardoduartes/user
+        run: docker push bernardoduartes/user_app
   deploy:
     needs: build
     runs-on: self-hosted
     steps:
       - name: Pull image from docker hub
-        run: docker pull bernardoduartes/user:latest
+        run: docker pull bernardoduartes/user_app:latest
       - name: Remove docker container
         run: docker rm -f user_app
       - name: Run Docker container
-        run: docker run -d -p 8080:8080 -e DB_URL=${{secrets.DB_URL}} -e DB_USERNAME=${{secrets.DB_USERNAME}} -e DB_PASSWORD='${{secrets.DB_PASSWORD}}' --name user_app bernardoduartes/user
+        run: docker run -d -p 8080:8080 -e DB_URL=${{secrets.DB_URL}} -e DB_USERNAME=${{secrets.DB_USERNAME}} -e DB_PASSWORD='${{secrets.DB_PASSWORD}}' --name user_app bernardoduartes/user_app
+      - name: Docker logs
+        run: docker logs user_app
